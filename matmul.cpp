@@ -45,10 +45,10 @@ int main(int argc, char **argv) {
     InterChiplet::sendMessage(0, 3, idX, idY, B, Row * Col * sizeof(int64_t));
 
     for(int i = 0; i < 3; i++) {
-        InterChiplet::receiveMessage(idX, idY, 0, i, Result[i], Row * Col/3 * sizeof(int64_t));
+        InterChiplet::receiveMessage(idX, idY, 0, i, Result[i], Row * (Col/3) * sizeof(int64_t));
     }
 
-    InterChiplet::receiveMessage(idX, idY, 0, 3, Result[3], Row * Col % (Row/3) * sizeof(int64_t));
+    InterChiplet::receiveMessage(idX, idY, 0, 3, Result[3], Row * (Col % (Row/3)) * sizeof(int64_t));
     for(int i = 0; i < Row; i++) {
         for(int j = 0; j < Col; j++) {
             cout << Result[i/33][j+i%33*100] << " ";

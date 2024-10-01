@@ -24,15 +24,14 @@ int Col_B = 100;
  * 根据线程编号不同计算出位于结果矩阵不同位置的数据。
  */
 
-void matrix_mul_cpu(const int64_t* M, const int64_t* N, int64_t* P, int width) {
-    for (int i = 0; i < width; ++i) {
-        for (int j = 0; j < width; ++j) {
-            int64_t sum = 0;
-            for (int k = 0; k < width; ++k) {
-                sum += M[j * width + k] * N[k * width + i];
+void matrix_mul_cpu(const int64_t* M, const int64_t* N, int64_t* P, int height_M, int width_M, int width_N) {
+    for (int i = 0; i < height_M; ++i) {
+        for(int j=0;j<width_N;j++){
+            P[i * width_N + j] = 0;
+            for (int k = 0; k < width_M; ++k) {
+                P[i * width_N + j] += M[i * width_M + k] * N[k * width_N + j];
             }
-            P[j * width + i] = sum;
-        }
+        } 
     }
 }
 
@@ -52,9 +51,8 @@ int main(int argc, char** argv) {
 
     // calculate
     std::cout<<"--------------------------------------开始计算--------------------------------------"<<std::endl;
-    matrix_mul_cpu(dataA, dataB, dataC, Col_B);
+    matrix_mul_cpu(dataA, dataB, dataC, Row_A,Col_A,Col_B);
     std::cout<<"--------------------------------------计算完成--------------------------------------"<<std::endl;
-    std::cout<<dataC[0]<<std::endl;
     InterChiplet::sendMessage(3, 3, idX, idY, dataC, Row_A * Col_B * sizeof(int64_t));
 
     delete[] dataA;
