@@ -14,8 +14,10 @@
  * 由矩阵乘法原理可知，我们可将计算任务划分为4个100*100的矩阵相乘，并将结果相加。
  */
 
-#define Row 1000
-#define Col 1000
+int Row_A = 33;
+int Col_A = 100;
+int Row_B = 100;
+int Col_B = 100;
 
 /**
  * 矩阵乘法的核心函数，由每个线程都会运行一次本函数，
@@ -38,18 +40,22 @@ int main(int argc, char** argv) {
     // 读取本进程所代表的chiplet编号
     int idX = atoi(argv[1]);
     int idY = atoi(argv[2]);
+    if(idY == 3){
+        Row_A = 1;
+    }
+    int64_t* dataA = new int64_t[Row_A * Col_A];
+    int64_t* dataB = new int64_t[Row_B * Col_B];
+    int64_t* dataC = new int64_t[Row_A * Col_B];
 
-    int64_t* dataA = new int64_t[Row * Col];
-    int64_t* dataB = new int64_t[Row * Col];
-    int64_t* dataC = new int64_t[Row * Col];
-
-    InterChiplet::receiveMessage(idX, idY, 3, 3, dataA, sizeof(int64_t) * Row * Col);
-    InterChiplet::receiveMessage(idX, idY, 3, 3, dataB, sizeof(int64_t) * Row * Col);
+    InterChiplet::receiveMessage(idX, idY, 3, 3, dataA, sizeof(int64_t) * Row_A * Col_A);
+    InterChiplet::receiveMessage(idX, idY, 3, 3, dataB, sizeof(int64_t) * Row_B * Col_B);
 
     // calculate
-    matrix_mul_cpu(dataA, dataB, dataC, Col);
-
-    InterChiplet::sendMessage(3, 3, idX, idY, dataC, Row * Col * sizeof(int64_t));
+    std::cout<<"--------------------------------------开始计算--------------------------------------"<<std::endl;
+    matrix_mul_cpu(dataA, dataB, dataC, Col_B);
+    std::cout<<"--------------------------------------计算完成--------------------------------------"<<std::endl;
+    std::cout<<dataC[0]<<std::endl;
+    InterChiplet::sendMessage(3, 3, idX, idY, dataC, Row_A * Col_B * sizeof(int64_t));
 
     delete[] dataA;
     delete[] dataB;
