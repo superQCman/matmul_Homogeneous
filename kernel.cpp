@@ -8,21 +8,14 @@
 #include <string>
 
 #include "apis_c.h"
-/**
- * 本示例程序为：通过4个GPU chiplet
- * 计算随机数矩阵A（400 * 100）与随机数矩阵B（100 * 400）相乘结果。
- * 由矩阵乘法原理可知，我们可将计算任务划分为4个100*100的矩阵相乘，并将结果相加。
- */
 
-int Row_A = 33;
-int Col_A = 100;
-int Row_B = 100;
-int Col_B = 100;
 
-/**
- * 矩阵乘法的核心函数，由每个线程都会运行一次本函数，
- * 根据线程编号不同计算出位于结果矩阵不同位置的数据。
- */
+int Row_A = 333;
+int Col_A = 1000;
+int Row_B = 1000;
+int Col_B = 1000;
+
+
 
 void matrix_mul_cpu(const int64_t* M, const int64_t* N, int64_t* P, int height_M, int width_M, int width_N) {
     for (int i = 0; i < height_M; ++i) {

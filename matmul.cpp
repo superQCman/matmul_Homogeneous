@@ -3,10 +3,10 @@
 #include <vector>
 #include "apis_c.h"
 
-int Row = 100;
-int Col = 100;
+int Row = 1000;
+int Col = 1000;
 
-// 300*100 和 100*300 相乘
+// 1000*1000 和 1000*1000 相乘
 int idX, idY;
 using namespace std;
 int main(int argc, char **argv) {
