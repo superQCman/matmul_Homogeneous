@@ -10,7 +10,7 @@
 #include "apis_c.h"
 
 
-int Row_A = 333;
+int Row_A = 250;
 int Col_A = 1000;
 int Row_B = 1000;
 int Col_B = 1000;
@@ -32,9 +32,9 @@ int main(int argc, char** argv) {
     // 读取本进程所代表的chiplet编号
     int idX = atoi(argv[1]);
     int idY = atoi(argv[2]);
-    if(idY == 3){
-        Row_A = 1;
-    }
+    // if(idY == 3){
+    //     Row_A = 1;
+    // }
     int64_t* dataA = new int64_t[Row_A * Col_A];
     int64_t* dataB = new int64_t[Row_B * Col_B];
     int64_t* dataC = new int64_t[Row_A * Col_B];
